@@ -1,0 +1,6 @@
+export const imagesDataActionTypes = {
+  IMAGES_FILL: 'IMAGES_FILL',
+  IMAGE_ADD: 'IMAGE_ADD',
+  IMAGE_EDIT: 'IMAGE_EDIT',
+  IMAGE_DELETE: 'IMAGE_DELETE',
+};

@@ -1,0 +1,6 @@
+export const colorsDataActionTypes = {
+  COLORS_FILL: 'COLORS_FILL',
+  COLOR_ADD: 'COLOR_ADD',
+  COLOR_EDIT: 'COLOR_EDIT',
+  COLOR_DELETE: 'COLOR_DELETE',
+};
