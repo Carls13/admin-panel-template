@@ -31,8 +31,8 @@ const usersDataReducer = (state = initialState, action) => {
 			  );
      		return {
      			users: [
-     				...notEditesUsers,
-     				action.user
+     				action.user,
+     				...notEditesUsers
      			]
      		}
      	default:

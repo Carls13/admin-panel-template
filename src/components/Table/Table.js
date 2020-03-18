@@ -9,10 +9,12 @@ import { InfoModal } from './../../components/InfoModal/InfoModal';
 
 import { useDelete } from './../../hooks/useDelete';
 
+import { useNavigate } from "@reach/router"
+
 export const Table = ({ paramsToTable, data, deleteAction, type }) => { 
 	const [
 		confirmModal,
-		userIdToDelete, 
+		dataIdToDelete, 
 		onConfirmDelete, 
 		onCancelDelete, 
 		deleteLoading, 
@@ -20,14 +22,16 @@ export const Table = ({ paramsToTable, data, deleteAction, type }) => {
 		onDeleteSuccess, 
 		handleDeleteClick] = useDelete(deleteAction);
 
+	const navigate = useNavigate();
+
 	return (
 		<Fragment>
-			{confirmModal && <ConfirmModal text={`¿Está seguro que desea eliminar el ${type}: ${userIdToDelete}?`}
+			{confirmModal && <ConfirmModal text={`¿Está seguro que desea eliminar el ${type}: ${dataIdToDelete}?`}
 										   onConfirm={onConfirmDelete}
 										   onCancel={onCancelDelete}
 										   loading={deleteLoading}
 										    />}
-			{(infoModal && userIdToDelete) && <InfoModal text={`El ${type}: ${userIdToDelete} fue borrado exitosamente.`}
+			{(infoModal && dataIdToDelete) && <InfoModal text={`El ${type}: ${dataIdToDelete} fue borrado exitosamente.`}
 									 onClick={onDeleteSuccess}/>
 								}
 			<TableContainer>
@@ -52,10 +56,10 @@ export const Table = ({ paramsToTable, data, deleteAction, type }) => {
 							cells.push(
 								<TD>
 									<Options>
-										<Option>
+										<Option onClick={() => navigate(`/users/${element.id}/detail`)}>
 											<FaEye size="32px"/>
 										</Option>
-										<Option>
+										<Option onClick={() => navigate(`/users/${element.id}/edit`)}>
 											<FaEdit size="32px"/>
 										</Option>
 										<Option onClick={() => handleDeleteClick(element.id)}>

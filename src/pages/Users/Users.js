@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, cloneElement } from 'react';
 
 import { connect } from 'react-redux';
 
@@ -9,13 +9,18 @@ import { Spinner } from './../../components/Spinner/Spinner';
 import { Table } from './../../components/Table/Table';
 import { Pagination } from './../../components/Pagination/Pagination';
 
-import { selectPaginatedUsers, selectUsersLength } from './../../redux/users/users.selectors';
+import { selectPaginatedUsers } from './../../redux/users/users.selectors';
 
 import { usePagination } from './../../hooks/usePagination';
 
+import Detail from './../Detail/Detail';
+import Edit from './../Edit/Edit';
+
+import { Router } from '@reach/router';
+
 const USERS_PER_PAGE = 10;
 
-const Users = ({ users, deleteUser, usersLength }) => {
+const Users = ({ users, deleteUser, editUser, usersLength, children, path }) => {
 	const [loading, setLoading] = useState(true);
 
 	const [paginatedData, setPaginatedData, currentPage, setCurrent] = usePagination();
@@ -27,6 +32,11 @@ const Users = ({ users, deleteUser, usersLength }) => {
 
 	const deleteAction = {
 		reduxFunction: (userId) => deleteUser(userId),
+		endpoint: ''
+	};
+
+	const editAction = {
+		reduxFunction: (userId) => editUser(userId),
 		endpoint: ''
 	};
 
@@ -43,6 +53,10 @@ const Users = ({ users, deleteUser, usersLength }) => {
 			{
 				loading ? <Spinner/> :
 					<Fragment>
+						<Router>
+        					<Detail path=":dataID/detail" type="Usuario" deleteAction={deleteAction} redirectTo={path} editUri={`/users`}/>
+        					<Edit path=":dataID/edit" type="Usuario" editAction={editAction} redirectTo={path}/>
+        				</Router>
 						<Title>Usuarios</Title>
 						<Table 
 							type="usuario"
@@ -63,14 +77,17 @@ const Users = ({ users, deleteUser, usersLength }) => {
 };
 
 const mapStateToProps = (state) => ({
-  	users: selectPaginatedUsers(USERS_PER_PAGE)(state),	
-  	usersLength: selectUsersLength(state),	
+  	users: selectPaginatedUsers(USERS_PER_PAGE)(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
     deleteUser: (userId) => dispatch({
       type: 'USER_DELETE',
       userId
+    }),
+    editUser: (user) => dispatch({
+      type: 'USER_EDIT',
+      user
     }),
 })
 

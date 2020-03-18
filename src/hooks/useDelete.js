@@ -1,39 +1,44 @@
 import { useState } from 'react';
+import { useNavigate } from "@reach/router"
 
 export const useDelete = (deleteAction) => {
-	const [userIdToDelete, setUserIdToDelete] = useState(null);
+	const [dataIdToDelete, setDataIdToDelete] = useState(null);
 	const [confirmModal, setConfirmModal] = useState(false);
 	const [infoModal, setInfoModal] = useState(false);
 	const [deleteLoading, setdeleteLoading] = useState(false);
 
-	const handleDeleteClick = (userId) => {
-		setUserIdToDelete(userId)
+	const navigate = useNavigate();
+
+	const handleDeleteClick = (dataId) => {
+		setDataIdToDelete(dataId)
 		setConfirmModal(true);
 	}
 
 	const onConfirmDelete = () => {
 		setdeleteLoading(true);
 		setTimeout(() => {
-			deleteAction.reduxFunction(userIdToDelete);
+			console.log(deleteAction, dataIdToDelete)
+			deleteAction.reduxFunction(dataIdToDelete);
 			setConfirmModal(false);
 			setInfoModal(true);
 		}, 2000);
 	};
 
 	const onCancelDelete = () => {
-		setUserIdToDelete(null);
+		setDataIdToDelete(null);
 		setConfirmModal(false);
 	};
 
-	const onDeleteSuccess = () => {
+	const onDeleteSuccess = (redirect) => {
 		setdeleteLoading(false);
 		setInfoModal(false);
-		setUserIdToDelete(null);
+		setDataIdToDelete(null);
+		if (redirect) navigate(redirect);
 	};
 
 	return [
 		confirmModal,
-		userIdToDelete, 
+		dataIdToDelete, 
 		onConfirmDelete, 
 		onCancelDelete, 
 		deleteLoading, 

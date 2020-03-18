@@ -21,7 +21,7 @@ const App = ({ authUser }) => {
         {!authUser && <Login path="/"/> }
         {authUser && <Dashboard path="/"/> }
         {authUser && <Categories path="/categories"/>}
-        {authUser && <Users path="/users"/>}
+        {authUser && <Users path="/users/*"/>}
         {authUser && <Colors path="/colors"/>}
         {authUser && <Images path="/images"/>}
         {!authUser && <Login path="/dashboard"/> }

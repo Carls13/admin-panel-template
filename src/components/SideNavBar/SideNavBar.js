@@ -9,8 +9,12 @@ import { connect } from 'react-redux';
 
 import { ConfirmModal } from './../ConfirmModal/ConfirmModal';
 
+import { useNavigate } from "@reach/router"
+
 const SideNavBar = ({ userSignOut }) => {
    const [showModal, setModal] = useState(false);
+   const navigate = useNavigate();
+
    const handleSignOut = () => {
       setModal(true);
    }
@@ -18,6 +22,7 @@ const SideNavBar = ({ userSignOut }) => {
    const handleConfirm = () => {
     setModal(false);
     userSignOut();
+    navigate('/login')
    }
 
    const handleCancel = () => {

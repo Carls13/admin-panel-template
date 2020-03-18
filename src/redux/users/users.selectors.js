@@ -1,11 +1,11 @@
-import { createSelector } from 'reselect'
+import { createSelector } from 'reselect';
 
-const selectUsers = state => state.users.users;
+export const selectUsers = state => state.users.users;
 
-export const selectUsersLength = () =>
+export const selectUserWithID = (userId) =>
   createSelector(
     [selectUsers],
-    users => users.length
+    users => users.filter((user) => user.id === userId)[0]
 );
 
 const chunkArray = (list, howMany) => {

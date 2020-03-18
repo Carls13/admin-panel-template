@@ -5,7 +5,7 @@ export const MyButton = styled.button`
 		opacity: .3;
 	}
 
-	border-radius: 3px;
+    border-radius: 50px;
 	color: #FFF;
 	height: 32px;
 	display: block;
