@@ -4,15 +4,33 @@ export const MyButton = styled.button`
 	&[disabled] {
 		opacity: .3;
 	}
-
+	
     border-radius: 50px;
 	color: #FFF;
-	height: 32px;
-	display: block;
-	margin: 20px auto;
 	width: 20%;
 	text-align: center;
 	cursor: pointer;
+	
+	${ props => {
+		if(props.hasChildren) {
+			return css`
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: center;
+				height: auto;
+				padding: 5px;
+				margin-left: auto;
+				`;
+		} else {
+			return css`
+				display: block;
+				height: 32px;
+				margin: 20px auto;
+				`;
+			}
+		}
+	}
 
 	${ props => {
 		switch (props.special){
@@ -30,5 +48,10 @@ export const MyButton = styled.button`
 					`
 			}
 		}
+	}
+
+	@media screen and (max-width: 600px) {
+		width: auto;
+		min-width: 20%;
 	}
 `;

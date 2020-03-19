@@ -13,41 +13,15 @@ import { Form, Title, EditBlock, LabelDiv, Label, InputDiv, Input, Buttons } fro
 
 import { selectDataWithID } from './../../redux/general-selectors';
 
+import { useSubmit } from './../../hooks/useSubmit';
+
 const Edit = ({type, dataID, data, editAction, redirectTo }) => {
+    const [infoModal, handleSubmit, onSubmitSuccess, dataToSubmit, handleChange, loading] = useSubmit(data, editAction);
+
     const navigate = useNavigate();
 
-	const [dataToEdit, setData] = useState(data);
-	const [editLoading, setEditLoading] = useState(false);
-	const [infoModal, setInfoModal] = useState(false);
-
-	const handleSubmit = (e) => {
-		e.preventDefault();
-
-		setEditLoading(true);
-
-		setTimeout(function(){
-			setEditLoading(false)
-			editAction.reduxFunction(dataToEdit);
-			setInfoModal(true);
-		}, 2000);
-	}
-
-	const onEditSuccess = (redirectTo) => {
-		setInfoModal(true);
-		navigate(redirectTo);
-	}
-
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		console.log(dataToEdit, name, value);
-		setData({
-			...dataToEdit,
-			[name]: value
-		}) 
-	}
-
 	let editForm = [];
-	for (const prop in dataToEdit) {
+	for (const prop in dataToSubmit) {
 		editForm.push(
 		<EditBlock onSubmit={handleSubmit}>
 			<LabelDiv>
@@ -58,7 +32,7 @@ const Edit = ({type, dataID, data, editAction, redirectTo }) => {
 					disabled={prop === 'id'}
 					type="text"
 					name={prop}
-					value={dataToEdit[prop]}
+					value={dataToSubmit[prop]}
 					onChange={handleChange}
 					placeholder={prop}
 					/>
@@ -66,23 +40,24 @@ const Edit = ({type, dataID, data, editAction, redirectTo }) => {
 		</EditBlock>)
 	};
 
-	const onReturn = () => {
+	const onReturn = (e) => {
+		e.preventDefault();
 		navigate(redirectTo);
 	}
 
 	return (
 		<Fragment>
 			{infoModal && <InfoModal text={`El ${type}: ${data.id} fue editado exitosamente.`}
-										 onClick={() => onEditSuccess(redirectTo)}/>}
+										 onClick={() => onSubmitSuccess(redirectTo)}/>}
 			{!infoModal && 
 				<Modal>
 				{
-					editLoading ? <Spinner/> :
-					    <Form onSubmit={handleSubmit}>
+					loading ? <Spinner/> :
+					    <Form>
 							<Title>Editar {type.toLowerCase()}: {dataID}</Title>
 						    {editForm}
 						    <Buttons>
-					        	<Button type="submit" special="confirm" text="Guardar"/>
+					        	<Button handleClick={handleSubmit} type="submit" special="confirm" text="Guardar"/>
 								<Button handleClick={onReturn} text="Regresar"/>
 							</Buttons>		
 					    </Form>

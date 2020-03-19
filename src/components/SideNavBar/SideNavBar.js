@@ -11,7 +11,7 @@ import { ConfirmModal } from './../ConfirmModal/ConfirmModal';
 
 import { useNavigate } from "@reach/router"
 
-const SideNavBar = ({ userSignOut }) => {
+const SideNavBar = ({ userSignOut, showMenu }) => {
    const [showModal, setModal] = useState(false);
    const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ const SideNavBar = ({ userSignOut }) => {
       {
         showModal && <ConfirmModal text="¿Está seguro que desea cerrar sesión?" onConfirm={handleConfirm} onCancel={handleCancel} />
       }
-      <SideContainer>
+      <SideContainer showMenu={showMenu}>
          <Title to="/dashboard">
             <TitleText>Pintulac</TitleText>
          </Title>

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from '@reach/router';
 
 export const SideContainer = styled.div`
@@ -14,15 +14,28 @@ export const SideContainer = styled.div`
 
     @media screen and (max-width: 600px) {
 		width: 100vw;
-		position: relative;
-		z-index: 1000;
-		left: -150vw;
+		align-items: center;
+		${ props => {
+			if(props.showMenu) {
+				return css`
+					display: flex;
+					`;
+			} else {
+				return css`
+					display: none;
+					`;
+				}
+			}
+		}
 	}
 `;
 
 export const Options = styled.div`
 	display: flex:
 	flex-direction: column; 
+	@media screen and (max-width: 600px) {
+		width: 100vw;
+	}
 `;
 
 export const Title = styled(Link)`
@@ -30,6 +43,11 @@ export const Title = styled(Link)`
 	padding: 10px;
 	color: unset;
 	text-decoration: none;
+	display: flex:
+	flex-direction: column; 
+	@media screen and (max-width: 600px) {
+		width: 100vw;
+	}
 `;
 
 export const TitleText = styled.h1`
@@ -52,6 +70,12 @@ export const Option = styled(Link)`
 	margin: 10px;
 	height: 10vh;
 	border-bottom: 1px solid hsl(304, 93%, 17%);
+
+	@media screen and (max-width: 600px) {
+		justify-content: center;
+		width: auto;
+		height: 10vh;
+	}
 `;
 
 export const SignOut = styled.span`
@@ -65,6 +89,11 @@ export const SignOut = styled.span`
 	border-bottom: 1px solid hsl(304, 93%, 17%);
 	// position: absolute;
 	// bottom: 0;
+	@media screen and (max-width: 600px) {
+		justify-content: center;
+		width: auto;
+		height: 10vh;
+	}
 `;
 
 export const Span = styled.span`

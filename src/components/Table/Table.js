@@ -11,7 +11,7 @@ import { useDelete } from './../../hooks/useDelete';
 
 import { useNavigate } from "@reach/router"
 
-export const Table = ({ paramsToTable, data, deleteAction, type }) => { 
+export const Table = ({ paramsToTable, data, deleteAction, type, redirectTo }) => { 
 	const [
 		confirmModal,
 		dataIdToDelete, 
@@ -32,7 +32,7 @@ export const Table = ({ paramsToTable, data, deleteAction, type }) => {
 										   loading={deleteLoading}
 										    />}
 			{(infoModal && dataIdToDelete) && <InfoModal text={`El ${type}: ${dataIdToDelete} fue borrado exitosamente.`}
-									 onClick={onDeleteSuccess}/>
+									 onClick={() => onDeleteSuccess(redirectTo)}/>
 								}
 			<TableContainer>
 				<TableHead>

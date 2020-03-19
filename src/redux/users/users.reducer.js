@@ -22,17 +22,20 @@ const usersDataReducer = (state = initialState, action) => {
      		return {
      			users: [
      				...state.users,
-     				action.user
+                         {
+                              ...action.user,
+                              id: state.users.length + 1
+                         }
      			]
      		}
      	case usersDataActionTypes.USER_EDIT:
-     		const notEditesUsers = state.users.filter(
+     		const notEditedUsers = state.users.filter(
 			    user => user.id !== action.user.id
 			  );
      		return {
      			users: [
      				action.user,
-     				...notEditesUsers
+     				...notEditedUsers
      			]
      		}
      	default:

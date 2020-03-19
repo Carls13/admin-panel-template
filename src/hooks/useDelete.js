@@ -17,7 +17,6 @@ export const useDelete = (deleteAction) => {
 	const onConfirmDelete = () => {
 		setdeleteLoading(true);
 		setTimeout(() => {
-			console.log(deleteAction, dataIdToDelete)
 			deleteAction.reduxFunction(dataIdToDelete);
 			setConfirmModal(false);
 			setInfoModal(true);
