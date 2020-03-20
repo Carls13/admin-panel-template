@@ -30,15 +30,3 @@ export const BodyRow = styled.tr`
 	height: 40px;
 	background: ${props => props.index % 2 === 0 ? 'rgba(141, 0, 255, .7)' : 'white'};
 `;
-
-export const Options = styled.div`
-	display: flex;
-	flex-direction: row;
-	width: 100%;
-`;
-
-export const Option = styled.div`
-	cursor: pointer;
-	width: 33%;
-	color: hsl(304, 93%, 27%);
-`;

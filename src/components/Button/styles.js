@@ -32,6 +32,13 @@ export const MyButton = styled.button`
 		}
 	}
 
+	${props => props.isIcon ? css`
+		margin-left: unset!important;
+		margin-right: 5px;
+		padding: 10px!important;
+		width: auto!important;
+		` : null}
+
 	${ props => {
 		switch (props.special){
 			case 'confirm': 

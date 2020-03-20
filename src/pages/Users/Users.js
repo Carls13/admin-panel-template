@@ -2,15 +2,16 @@ import React, { useState, useEffect, Fragment } from 'react';
 
 import { connect } from 'react-redux';
 
-import { Title, ButtonContainer, Scrollable } from './styles';
+import { Title, Scrollable } from './styles';
 
 import { AdminLayout } from './../../components/AdminLayout/AdminLayout';
 import { Spinner } from './../../components/Spinner/Spinner';
 import { Table } from './../../components/Table/Table';
 import { Pagination } from './../../components/Pagination/Pagination';
-import { Button } from './../../components/Button/Button';
+import { Filtering } from './../../components/Filtering/Filtering';
+import { AddButton } from './../../components/AddButton/AddButton';
 
-import { selectPaginatedUsers } from './../../redux/users/users.selectors';
+import { selectUsers } from './../../redux/users/users.selectors';
 
 import { usePagination } from './../../hooks/usePagination';
 
@@ -18,22 +19,39 @@ import Detail from './../Detail/Detail';
 import Edit from './../Edit/Edit';
 import { Create } from './../Create/Create';
 
-import { FaPlus } from 'react-icons/fa'
-
 import { Router, useNavigate } from '@reach/router';
 
 const USERS_PER_PAGE = 10;
 
-const Users = ({ users, deleteUser, editUser, addUser, path }) => {
+const Users = ({ users, deleteUser, editUser, addUser, filterUsers, path }) => {
 	const [loading, setLoading] = useState(true);
-	const [paginatedData, setPaginatedData, currentPage, setCurrent] = usePagination();
+	const initialFilters = [
+		{
+			label: 'Usuario',
+			param: 'username',
+			value: ''
+		},
+		{
+			label: 'Correo',
+			param: 'email',
+			value: ''
+		}
+	];
+
+	const [ paginatedData, 
+			setPaginatedData, 
+			currentPage, 
+			setCurrent, 
+			handleChange, 
+			handleClear,  
+			filters] = usePagination(initialFilters, users, USERS_PER_PAGE);
+
 
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		setTimeout(() => setLoading(false), 2000);
-		setPaginatedData(users);
-	}, [users]);
+	}, []);
 
 	const deleteAction = {
 		reduxFunction: (userId) => deleteUser(userId),
@@ -76,6 +94,7 @@ const Users = ({ users, deleteUser, editUser, addUser, path }) => {
     					<Create path="new" type="Usuario" createAction={createAction} redirectTo={path} params={params}/>
     				</Router>
 					<Title>Usuarios</Title>
+					<Filtering filters={filters} handleChange={handleChange} handleClear={handleClear}/>
 					<Scrollable>
 						<Table 
 							type="usuario"
@@ -85,12 +104,7 @@ const Users = ({ users, deleteUser, editUser, addUser, path }) => {
 							redirectTo={path}
 							/>
 					</Scrollable>
-					<ButtonContainer>
-						<Button special="confirm" handleClick={() => navigate('/users/new')}>
-							<FaPlus size="32px"/>
-							 &nbsp; Nuevo
-						</Button>
-					</ButtonContainer>
+					<AddButton handleClick={() => navigate('/users/new')} />
 					<Pagination 
 						currentPage={currentPage} 
 						data={paginatedData} 
@@ -104,7 +118,8 @@ const Users = ({ users, deleteUser, editUser, addUser, path }) => {
 };
 
 const mapStateToProps = (state) => ({
-  	users: selectPaginatedUsers(USERS_PER_PAGE)(state)
+  	users: selectUsers(state),
+
 });
 
 const mapDispatchToProps = (dispatch) => ({

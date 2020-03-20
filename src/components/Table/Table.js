@@ -1,11 +1,10 @@
 import React, { Fragment } from 'react';
 
-import { TableContainer, TableHead, HeadRow, TD, TableBody, BodyRow, Options, Option } from './styles';
-
-import { FaEye, FaEdit, FaTrash } from 'react-icons/fa'
+import { TableContainer, TableHead, HeadRow, TD, TableBody, BodyRow } from './styles';
 
 import { ConfirmModal } from './../../components/ConfirmModal/ConfirmModal';
 import { InfoModal } from './../../components/InfoModal/InfoModal';
+import { DetailOptions } from './../../components/DetailOptions/DetailOptions';
 
 import { useDelete } from './../../hooks/useDelete';
 
@@ -46,7 +45,7 @@ export const Table = ({ paramsToTable, data, deleteAction, type, redirectTo }) =
 				</TableHead>
 				<TableBody>
 					{
-						data.map((element) => {
+						data && data.map((element) => {
 							let cells = [];
 
 							for (const prop in element) {
@@ -55,17 +54,10 @@ export const Table = ({ paramsToTable, data, deleteAction, type, redirectTo }) =
 
 							cells.push(
 								<TD>
-									<Options>
-										<Option onClick={() => navigate(`/users/${element.id}/detail`)}>
-											<FaEye size="32px"/>
-										</Option>
-										<Option onClick={() => navigate(`/users/${element.id}/edit`)}>
-											<FaEdit size="32px"/>
-										</Option>
-										<Option onClick={() => handleDeleteClick(element.id)}>
-											<FaTrash size="32px"/>
-										</Option>
-									</Options>
+									<DetailOptions 
+										handleDetail={() => navigate(`/users/${element.id}/detail`)}
+										handleEdit={() => navigate(`/users/${element.id}/edit`)}
+										handleDelete={() => handleDeleteClick(element.id)} />
 								</TD>
 								);
 
